@@ -1,5 +1,7 @@
 package test.addressbook;
 
+import org.openqa.selenium.firefox.FirefoxBinary;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -22,7 +24,8 @@ public class GroupTests {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        wd = new FirefoxDriver();
+        FirefoxBinary binary = new FirefoxBinary(new File("C:\\Program Files\\Mozilla Firefox\\firefox.exe"));
+        wd = new FirefoxDriver(binary, new FirefoxProfile());
         wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
         wd.get("http://localhost/addressbook/group.php");
         login();
