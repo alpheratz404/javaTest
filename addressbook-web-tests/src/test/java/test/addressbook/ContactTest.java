@@ -21,11 +21,11 @@ public class ContactTest {
     public void setUp() throws Exception {
         wd = new FirefoxDriver();
         wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-    }
-    
-    @Test
-    public void ContactTest() {
         wd.get("http://localhost/addressbook/");
+        login();
+    }
+
+    private void login() {
         wd.findElement(By.name("user")).click();
         wd.findElement(By.name("user")).clear();
         wd.findElement(By.name("user")).sendKeys("admin");
@@ -33,7 +33,25 @@ public class ContactTest {
         wd.findElement(By.name("pass")).clear();
         wd.findElement(By.name("pass")).sendKeys("secret");
         wd.findElement(By.xpath("//form[@id='LoginForm']/input[3]")).click();
-        wd.findElement(By.linkText("add new")).click();
+    }
+
+    @Test
+    public void testContact() {
+        addNewContact();
+        enterData();
+        submitContact();
+        returnHome();
+    }
+
+    private void returnHome() {
+        wd.findElement(By.xpath("//div/div[4]/div/i/a[2]")).click();
+    }
+
+    private void submitContact() {
+        wd.findElement(By.xpath("//div[@id='content']/form/input[21]")).click();
+    }
+
+    private void enterData() {
         wd.findElement(By.name("firstname")).click();
         wd.findElement(By.name("firstname")).clear();
         wd.findElement(By.name("firstname")).sendKeys("Masha");
@@ -49,10 +67,12 @@ public class ContactTest {
         wd.findElement(By.name("address2")).click();
         wd.findElement(By.name("address2")).clear();
         wd.findElement(By.name("address2")).sendKeys("city");
-        wd.findElement(By.xpath("//div[@id='content']/form/input[21]")).click();
-        wd.findElement(By.xpath("//div/div[4]/div/i/a[2]")).click();
     }
-    
+
+    private void addNewContact() {
+        wd.findElement(By.linkText("add new")).click();
+    }
+
     @AfterMethod
     public void tearDown() {
         wd.quit();
