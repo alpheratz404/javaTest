@@ -6,9 +6,9 @@ public class ContactTest extends TestBase {
 
     @Test
     public void testContact() {
-        addNewContact();
-        enterData(new ContactData("Masha", "Ivanova", "79773456757", "gav@gav.ru", "city"));
-        submitContact();
-        returnHome();
+        app.addNewContact();
+        app.enterData(new ContactData("Masha", "Ivanova", "79773456757", "gav@gav.ru", "city"));
+        app.submitContact();
+        app.returnHome();
     }
 }
