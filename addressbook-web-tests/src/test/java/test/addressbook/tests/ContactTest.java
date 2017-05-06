@@ -1,27 +1,25 @@
 package test.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.addressbook.model.ContactData;
+import test.addressbook.model.Contacts;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactTest extends TestBase {
 
     @Test
     public void testContact() {
-        app.getNavigationHelper().gotoHomePage();
-        List<ContactData> before = app.getContactHelper().getContactList();
-        ContactData contact = new ContactData("Masha", "Ivanova", "79773456757", null, null);
-        app.getContactHelper().createContact(contact);
-        List<ContactData> after = app.getContactHelper().getContactList();
-        Assert.assertEquals(after.size(), before.size() + 1);
+        app.goTo().homePage();
+       Contacts before = app.contact().allC();
+        ContactData contact = new ContactData().withName("Masha").withLastname("Ivanova").withMobilenumber("79773456757");
+        app.contact().createC(contact);
+        Contacts after = app.contact().allC();
 
-        before.add(contact);
-        Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
-        before.sort(byId);
-        after.sort(byId);
-        Assert.assertEquals(before, after);
+        assertThat(after.size(), equalTo(before.size() + 1));
+        assertThat(after, equalTo(
+                before.withAdded(contact.withId(after.stream().mapToInt((c) ->
+                        c.getId()).max().getAsInt()))));
     }
 }

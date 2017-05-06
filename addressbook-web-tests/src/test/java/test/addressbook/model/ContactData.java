@@ -1,39 +1,45 @@
 package test.addressbook.model;
 
 public class ContactData {
-    private int id;
-    private final String name;
-    private final String lastname;
-    private final String mobilenumber;
-    private final String email;
-    private final String cityname;
-
-    public ContactData(String name, String lastname, String mobilenumber, String email, String cityname) {
-        this.id = Integer.MAX_VALUE;
-        this.name = name;
-        this.lastname = lastname;
-        this.mobilenumber = mobilenumber;
-        this.email = email;
-        this.cityname = cityname;
-    }
-
-
-    public ContactData(int id, String name, String lastname, String mobilenumber, String email, String cityname) {
-        this.id = id;
-        this.name = name;
-        this.lastname = lastname;
-        this.mobilenumber = mobilenumber;
-        this.email = email;
-        this.cityname = cityname;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private int id = Integer.MAX_VALUE;;
+    private String name;
+    private String lastname;
+    private String mobilenumber;
+    private String email;
+    private String cityname;
 
     public int getId() {
 
-        return id;
+        return id; }
+
+    public ContactData withId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public ContactData withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public ContactData withLastname(String lastname) {
+        this.lastname = lastname;
+        return this;
+    }
+
+    public ContactData withMobilenumber(String mobilenumber) {
+        this.mobilenumber = mobilenumber;
+        return this;
+    }
+
+    public ContactData withEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public ContactData withCityname(String cityname) {
+        this.cityname = cityname;
+        return this;
     }
 
     public String getName() {
@@ -72,13 +78,15 @@ public class ContactData {
 
         ContactData that = (ContactData) o;
 
+        if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         return lastname != null ? lastname.equals(that.lastname) : that.lastname == null;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
         return result;
     }
