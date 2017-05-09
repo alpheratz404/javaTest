@@ -7,9 +7,8 @@ import test.addressbook.model.ContactData;
 import test.addressbook.model.Contacts;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 public class ContactHelper extends BaseHelper {
 
@@ -64,6 +63,7 @@ public class ContactHelper extends BaseHelper {
         addNewContact();
         enterData(contact);
         submitContact();
+        contactCache = null;
         returnHome();
     }
 
@@ -72,6 +72,7 @@ public class ContactHelper extends BaseHelper {
         initContactModification(contact.getId());
         enterData(contact);
         submitContactModification();
+        contactCache = null;
         returnHome();
     }
 
@@ -85,6 +86,7 @@ public class ContactHelper extends BaseHelper {
         selectContactById(contact.getId());
         deleteSelectedContacts();
         acceptAlertPopUp();
+        contactCache = null;
         returnHome();
     }
 
@@ -92,7 +94,7 @@ public class ContactHelper extends BaseHelper {
         return isElementPresent(By.xpath("//div/div[4]/form[2]/table/tbody/tr[2]/td[1]/input"));
     }
 
-    public int getContactCount() {
+    public int countC() {
         return wd.findElements(By.xpath("//div/div[4]/form[2]/table/tbody/tr[2]/td[1]/input")).size();
     }
 
@@ -107,15 +109,49 @@ public class ContactHelper extends BaseHelper {
         }
         return contacts;
     }
+
+    private Contacts contactCache = null;
+
         public Contacts allC() {
-            Contacts contacts = new Contacts();
+            if (contactCache !=null) {
+                return  new Contacts(contactCache);
+        }
+            contactCache = new Contacts();
             List<WebElement> elements = wd.findElements(By.xpath("//tr[@name = 'entry']"));
             for (WebElement element : elements) {
-                String name = element.findElement(By.xpath(".//td[3]")).getText();
-                String lastname = element.findElement(By.xpath(".//td[2]")).getText();
+                List<WebElement> cells = element.findElements(By.tagName("td"));
+                String lastname = cells.get(1).getText();
+                String name = cells.get(2).getText();
+                String address = cells.get(3).getText();
+                String allEmails = cells.get(4).getText();
+                String allPhones = cells.get(5).getText();
+
+
                 int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-                contacts.add(new ContactData().withId(id).withName(name).withLastname(lastname));
+                contactCache.add(new ContactData().withId(id).withName(name)
+                        .withLastname(lastname).withCityname(address).withAllEmails(allEmails)
+                        .withAllPhones(allPhones));
             }
-            return contacts;
+            return new Contacts(contactCache);
         }
-}
+
+    public ContactData infoFromEditForm(ContactData contact) {
+        initContactModification(contact.getId());
+        String firstName = wd.findElement(By.name("firstname")).getAttribute("value");
+        String lastName = wd.findElement(By.name("lastname")).getAttribute("value");
+        String home = wd.findElement(By.name("home")).getAttribute("value");
+        String mobilenumber = wd.findElement(By.name("mobile")).getAttribute("value");
+        String work = wd.findElement(By.name("work")).getAttribute("value");
+        String address = wd.findElement(By.name("address")).getText();
+        String email = wd.findElement(By.name("email")).getAttribute("value");
+        String email2 = wd.findElement(By.name("email2")).getAttribute("value");
+        String email3 = wd.findElement(By.name("email3")).getAttribute("value");
+
+        wd.navigate().back();
+        return new ContactData().withId(contact.getId()).withName(firstName).withLastname(lastName)
+                .withHomePhone(home).withMobilenumber(mobilenumber).withWorkPhone(work)
+                .withCityname(address).withEmail(email).withEmail2(email2).withEmail3(email3);
+    }
+    }
+
+
