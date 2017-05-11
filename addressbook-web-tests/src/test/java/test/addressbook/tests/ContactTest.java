@@ -37,6 +37,7 @@ public class ContactTest extends TestBase {
 
     @Test(dataProvider = "validContacts")
     public void testContact(ContactData contact) {
+        app.goTo().homePage();
         Contacts before = app.contact().allC();
         app.contact().createC(contact);
         assertThat(app.contact().countC(), equalTo(before.size() + 1));

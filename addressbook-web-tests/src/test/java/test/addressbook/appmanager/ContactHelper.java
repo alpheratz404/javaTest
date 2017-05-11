@@ -95,7 +95,7 @@ public class ContactHelper extends BaseHelper {
     }
 
     public int countC() {
-        return wd.findElements(By.xpath("//div/div[4]/form[2]/table/tbody/tr[2]/td[1]/input")).size();
+        return wd.findElements(By.name("selected[]")).size();
     }
 
     public List<ContactData> listC() {
