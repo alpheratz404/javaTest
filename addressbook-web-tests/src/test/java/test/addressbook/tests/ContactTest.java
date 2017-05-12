@@ -19,6 +19,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactTest extends TestBase {
+
+
     @DataProvider
     public Iterator<Object[]> validContacts() throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.json")))) {
