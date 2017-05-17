@@ -40,10 +40,10 @@ public class GroupTests extends TestBase {
     @Test(dataProvider = "validGroups")
     public void groupTest(GroupData group) {
         app.goTo().groupPage();
-        Groups before = app.group().all();
+        Groups before = app.db().groups();
         app.group().createG(group);
-        assertThat(app.group().count(), equalTo(before.size() + 1));
-        Groups after = app.group().all();
+        assertThat(app.group().count(), equalTo(before.size() +1));
+        Groups after = app.db().groups();
         assertThat(after, equalTo(
                 before.withAdded(group.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
     }
