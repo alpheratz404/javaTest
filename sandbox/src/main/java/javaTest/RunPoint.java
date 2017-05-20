@@ -4,12 +4,12 @@ public class RunPoint {
 
     public static void main(String[] args) {
 
-        Point p1 = new Point(1, 5);
+        Point p1 = new Point(1, 0);
 
         System.out.println("Координты точки p1.x = " + p1.x + ", p1.y =" + p1.y);
 
 
-        Point p2 = new Point(9, 12);
+        Point p2 = new Point(3, 0);
 
 
         System.out.println("Координты точки p2.x = " + p2.x + ", p2.y = " + p2.y);
