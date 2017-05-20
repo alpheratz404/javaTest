@@ -24,7 +24,7 @@ public class TestBase {
 
     @AfterSuite(alwaysRun = true)
     public void tearDown() throws IOException {
-        app.ftp().restore("config_inc.php.bak","config_inc.php");
+       app.ftp().restore("config_inc.php","config_inc.php.bak");
         app.stop();
     }
 
