@@ -3,8 +3,8 @@ package test.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import test.addressbook.model.ContactData;
-import test.addressbook.model.Contacts;
+import org.openqa.selenium.support.ui.Select;
+import test.addressbook.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +152,42 @@ public class ContactHelper extends BaseHelper {
                 .withHomePhone(home).withMobilenumber(mobilenumber).withWorkPhone(work)
                 .withCityname(address).withEmail(email).withEmail2(email2).withEmail3(email3);
     }
+
+    public void addToGroup(ContactData contact, GroupData group) {
+        selectContactById(contact.getId());
+        submitAddContactToGroup(group);
     }
+    private void submitAddContactToGroup(GroupData group) {
+        new Select(wd.findElement(By.name("to_group"))).selectByVisibleText(group.getName());
+        click(By.name("add"));
+    }
+
+    public void removeFromGroup(Groups list, ContactInGroupData toDelete) {
+        selectGroup(list, toDelete);
+        selectContact();
+        submitDeleteContactFromGroup();
+    }
+
+        private void selectContact() {
+            click(By.name("selected[]"));
+    }
+
+    private void submitDeleteContactFromGroup() {
+        click(By.name("remove"));
+    }
+
+    private void selectGroup(Groups list, ContactInGroupData toDelete) {
+        String groupToSelect = null;
+
+        for (GroupData s : list) {
+            if (s.getId() == toDelete.getGroupId()) {
+                groupToSelect = s.getName();
+                break;
+            }
+        }
+        new Select(wd.findElement(By.name("group"))).selectByVisibleText(groupToSelect);
+    }
+}
+
 
 
